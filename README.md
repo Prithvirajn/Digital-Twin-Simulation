@@ -1,2 +1,2 @@
 # Digital-Twin-Basavanagudi
-Final year project - Cambridge 2026 batch ISE (Team XYZ)
+Final year project - Cambridge 2026 batch ISE (Team 22)
