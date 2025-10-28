@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Garbage Report Upload</title>
+</head>
+<body>
+    <h2>Submit Garbage Bin Photo & Location</h2>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label>Photo:</label>
+        <input type="file" name="photo" accept="image/*" capture="environment" required><br><br>
+
+        <label>Latitude:</label>
+        <input type="text" name="lat" id="lat" readonly required><br><br>
+
+        <label>Longitude:</label>
+        <input type="text" name="lon" id="lon" readonly required><br><br>
+
+        <input type="submit" value="Upload">
+    </form>
+
+    <script>
+        // Auto-detect GPS
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    document.getElementById("lat").value = position.coords.latitude;
+                    document.getElementById("lon").value = position.coords.longitude;
+                },
+                function(error) {
+                    alert("Error getting location: " + error.message + "\nPlease enable location on your device.");
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        } else {
+            alert("Geolocation is not supported by your browser.");
+        }
+    </script>
+</body>
+</html>

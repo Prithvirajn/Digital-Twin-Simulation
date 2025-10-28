@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Open All Simulation Maps</title>
+    <script>
+        function openMaps() {
+            const files = [
+                "day01.html",
+                "day02.html",
+                "day03.html",
+                "day04.html",
+                "day05.html",
+                "day06.html",
+                "day07.html"
+            ];
+            files.forEach(file => {
+                window.open(file, "_blank", "noopener,noreferrer");
+            });
+        }
+    </script>
+</head>
+<body>
+    <h2>Simulation Maps</h2>
+    <p>Click the button below to open all simulation maps in separate tabs:</p>
+    <button onclick="openMaps()">Open All Maps</button>
+</body>
+</html>
