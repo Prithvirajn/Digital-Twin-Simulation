@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,3 +82,88 @@ document.getElementById("reportForm").addEventListener("submit", function(e){
 </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Report Garbage Bin</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; }
+form { display: flex; flex-direction: column; gap: 10px; width: 320px; }
+button { padding: 10px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+video, canvas { width: 300px; height: 200px; border: 1px solid #ccc; }
+</style>
+</head>
+<body>
+<h2>Report Overflowing Garbage Bin</h2>
+
+<form id="reportForm">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Your Email" required>
+    <video id="video" autoplay></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <button type="button" id="captureBtn">Capture Photo</button>
+    <input type="hidden" id="photoData">
+    <button type="submit">Submit Report</button>
+</form>
+
+<script>
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const photoDataInput = document.getElementById("photoData");
+const captureBtn = document.getElementById("captureBtn");
+
+// Access camera
+navigator.mediaDevices.getUserMedia({video: true})
+    .then(stream => video.srcObject = stream)
+    .catch(err => alert("Camera access denied: " + err));
+
+captureBtn.addEventListener("click", () => {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    photoDataInput.value = canvas.toDataURL("image/png");
+    canvas.style.display = "block";
+    alert("Photo captured!");
+});
+
+// Submit form
+document.getElementById("reportForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    
+    if(!photoDataInput.value){
+        alert("Please capture a photo first!");
+        return;
+    }
+
+    if(!navigator.geolocation){
+        alert("Geolocation not supported!");
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(pos => {
+        const report = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            photo: photoDataInput.value,
+            lat: pos.coords.latitude,
+            lon: pos.coords.longitude,
+            timestamp: new Date().toISOString()
+        };
+
+        fetch("/report", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(report)
+        })
+        .then(res => res.json())
+        .then(data => alert(data.message))
+        .catch(err => alert("Error: " + err));
+    }, err => alert("Failed to get location: " + err.message));
+});
+</script>
+</body>
+</html>
+>>>>>>> a8ee72ade03890e0735d53aa3bfabf6944a8f04f
